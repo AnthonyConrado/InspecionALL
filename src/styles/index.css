@@ -1,0 +1,433 @@
+@import 'tailwindcss';
+
+/* ------------------------------------------------------------------
+   Fontes auto-hospedadas (sem requisições a terceiros — melhor para
+   desempenho e para a privacidade dos visitantes).
+   Licenças: public/fonts/*-OFL.txt
+   ------------------------------------------------------------------ */
+@font-face {
+  font-family: 'Fraunces';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('/fonts/fraunces-latin-600-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Instrument Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/instrument-sans-regular.woff') format('woff');
+}
+@font-face {
+  font-family: 'Instrument Sans';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/instrument-sans-italic.woff') format('woff');
+}
+@font-face {
+  font-family: 'Instrument Sans';
+  font-style: normal;
+  font-weight: 600 700;
+  font-display: swap;
+  src: url('/fonts/instrument-sans-bold.woff') format('woff');
+}
+
+/* ------------------------------------------------------------------
+   Tokens de design
+   ------------------------------------------------------------------ */
+@theme {
+  --font-display: 'Fraunces', 'Iowan Old Style', Georgia, serif;
+  --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  --color-petrol-950: #062a2b;
+  --color-petrol-900: #093a3c;
+  --color-petrol-800: #0b4547;
+  --color-petrol-700: #115b5c;
+  --color-petrol-600: #19706f;
+  --color-petrol-300: #8fbcb7;
+  --color-petrol-200: #c4dcd8;
+  --color-petrol-100: #dfecea;
+  --color-petrol-50: #eff6f5;
+
+  --color-paper: #faf8f4;
+  --color-sand: #f2eee6;
+  --color-line: #ddd5c8;
+  --color-ink: #172022;
+  --color-muted: #4b5759;
+
+  --color-ochre: #8a5f16;
+  --color-ochre-light: #f0c46c;
+
+  --color-danger: #a42a1f;
+  --color-success: #1d6b3a;
+
+  --radius-card: 1.25rem;
+
+  --animate-fade-up: fade-up 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+
+/* ------------------------------------------------------------------
+   Base
+   ------------------------------------------------------------------ */
+@layer base {
+  :root {
+    --focus: var(--color-petrol-800);
+    --focus-halo: #ffffff;
+    color-scheme: light;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    scroll-padding-top: 6rem;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    line-height: 1.12;
+    text-wrap: balance;
+    color: inherit;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Palavras longas quebram em vez de vazar a tela (texto ampliado). */
+  h1,
+  h2,
+  h3,
+  p,
+  li,
+  a,
+  span {
+    overflow-wrap: break-word;
+  }
+
+  /* Itens de grade podem encolher abaixo da largura do conteúdo. */
+  .grid > *,
+  .flex > * {
+    min-width: 0;
+  }
+  fieldset {
+    min-inline-size: 0;
+  }
+
+  ::selection {
+    background: var(--color-petrol-200);
+    color: var(--color-petrol-950);
+  }
+
+  /* Indicador de foco visível e com contraste em fundos claros e escuros
+     (WCAG 2.2 — 2.4.7 e 2.4.11). */
+  :focus-visible {
+    outline: 3px solid var(--focus);
+    outline-offset: 3px;
+    border-radius: 4px;
+    box-shadow: 0 0 0 6px var(--focus-halo);
+  }
+
+  .on-dark {
+    --focus: var(--color-ochre-light);
+    --focus-halo: var(--color-petrol-950);
+  }
+
+  /* Alvos de toque confortáveis (WCAG 2.2 — 2.5.8). */
+  button,
+  [role='button'],
+  input[type='checkbox'],
+  select {
+    cursor: pointer;
+  }
+
+  [hidden] {
+    display: none !important;
+  }
+}
+
+/* ------------------------------------------------------------------
+   Componentes e utilitários próprios
+   ------------------------------------------------------------------ */
+@layer components {
+  .container-site {
+    width: 100%;
+    max-width: 78rem;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+  @media (min-width: 640px) {
+    .container-site {
+      padding-inline: 2rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .container-site {
+      padding-inline: 3rem;
+    }
+  }
+
+  .eyebrow {
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  /* Referência ao piso tátil de alerta: grade de pontos. */
+  .bg-tactile {
+    background-image: radial-gradient(currentColor 1.6px, transparent 1.8px);
+    background-size: 16px 16px;
+  }
+
+  /* Referência ao piso tátil direcional: faixas paralelas. */
+  .bg-directional {
+    background-image: repeating-linear-gradient(
+      90deg,
+      currentColor 0 3px,
+      transparent 3px 14px
+    );
+  }
+
+  .text-measure {
+    max-width: 68ch;
+  }
+
+  .link-underline {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+    transition: text-decoration-thickness 0.15s;
+  }
+  .link-underline:hover {
+    text-decoration-thickness: 2px;
+  }
+}
+
+/* ------------------------------------------------------------------
+   Animações discretas de entrada — desativadas quando o sistema
+   solicita redução de movimento (a classe .motion-ok só é aplicada
+   quando prefers-reduced-motion não está ativo).
+   ------------------------------------------------------------------ */
+.motion-ok .reveal {
+  opacity: 0;
+  transform: translate3d(0, 14px, 0);
+  transition:
+    opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+.motion-ok .reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Modo de alto contraste do sistema (Windows) */
+@media (forced-colors: active) {
+  .bg-tactile,
+  .bg-directional {
+    background-image: none;
+  }
+  :focus-visible {
+    outline: 3px solid CanvasText;
+  }
+}
+
+/* ------------------------------------------------------------------
+   Preferências do botão de acessibilidade (classes no <html>)
+   ------------------------------------------------------------------ */
+
+/* Alto contraste: redefine as cores do tema. */
+.a11y-contrast {
+  --color-paper: #ffffff;
+  --color-sand: #ffffff;
+  --color-line: #000000;
+  --color-ink: #000000;
+  --color-muted: #000000;
+  --color-petrol-950: #000000;
+  --color-petrol-900: #000000;
+  --color-petrol-800: #00302e;
+  --color-petrol-700: #00302e;
+  --color-petrol-600: #00302e;
+  --color-petrol-300: #ffffff;
+  --color-petrol-200: #ffffff;
+  --color-petrol-100: #ffffff;
+  --color-petrol-50: #ffffff;
+  --color-ochre: #000000;
+  --color-ochre-light: #ffe066;
+  --focus: #000000;
+}
+.a11y-contrast .on-dark {
+  --focus: #ffe066;
+}
+.a11y-contrast .bg-tactile,
+.a11y-contrast .bg-directional {
+  background-image: none;
+}
+.a11y-contrast :where(.border, [class*='border-']) {
+  border-color: currentColor;
+}
+.a11y-contrast img,
+.a11y-contrast video {
+  filter: contrast(1.1);
+}
+
+/* Espaçamento de texto (itens 5.12.1 a 5.12.4 — configuráveis pelo usuário). */
+.a11y-spacing body,
+.a11y-spacing body * {
+  line-height: 1.8 !important;
+  letter-spacing: 0.12em !important;
+  word-spacing: 0.16em !important;
+}
+.a11y-spacing :where(main p, main li) {
+  margin-block-end: 1em;
+}
+.a11y-spacing :where(main p + p) {
+  margin-block-start: 2em;
+}
+
+/* Destacar links */
+.a11y-links a {
+  text-decoration: underline !important;
+  text-decoration-thickness: 2px !important;
+  text-underline-offset: 0.2em !important;
+}
+
+/* Pausar animações (item 5.15.1) */
+.a11y-no-motion *,
+.a11y-no-motion *::before,
+.a11y-no-motion *::after {
+  animation: none !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
+}
+.a11y-no-motion .reveal {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+/* Fonte simplificada: uma única família sem serifa */
+.a11y-simple-font {
+  --font-display: var(--font-sans);
+}
+.a11y-simple-font :where(h1, h2, h3, .font-display) {
+  letter-spacing: 0;
+}
+
+/* Texto ampliado/espaçado: menu compacto no cabeçalho em qualquer largura,
+   para que nada se sobreponha (itens 5.12.7 e 5.10.4). */
+.a11y-text-large .desktop-nav {
+  display: none !important;
+}
+.a11y-text-large .menu-btn {
+  display: inline-flex !important;
+}
+.a11y-text-large .menu-panel:not([hidden]) {
+  display: block !important;
+}
+.a11y-text-large .logo-name {
+  white-space: normal;
+}
+
+/* ------------------------------------------------------------------
+   Fluidez: transições suaves
+   ------------------------------------------------------------------ */
+
+/* Entrada da página após navegação interna */
+.motion-ok .page-enter {
+  animation: page-enter 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Imagens surgem com esmaecimento ao terminar de carregar */
+.motion-ok .img-fade {
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+.motion-ok .img-fade.is-loaded {
+  opacity: 1;
+}
+
+/* Carrossel: esmaecimento cruzado + leve aproximação da foto atual */
+.carousel-slide {
+  transition: opacity 1.1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.motion-ok .carousel-img {
+  transform: scale(1.06);
+  transition:
+    opacity 0.6s ease,
+    transform 6.5s cubic-bezier(0.2, 0.6, 0.3, 1);
+}
+.motion-ok .carousel-img.is-current {
+  transform: scale(1);
+}
+.carousel-progress {
+  transform-origin: left;
+  animation: carousel-progress linear both;
+}
+@keyframes carousel-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* Sem redução de movimento: animações já bloqueadas pelas regras acima;
+   aqui garantimos que nada fique invisível. */
+.a11y-no-motion .img-fade {
+  opacity: 1 !important;
+}

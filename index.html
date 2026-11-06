@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0b4547" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="preload" href="/fonts/fraunces-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/instrument-sans-regular.woff" as="font" type="font/woff" crossorigin />
+    <!--head-->
+    <title>Bianca Fernandez | Acessibilidade</title>
+    <script>
+      // Animações de entrada só são ativadas quando o usuário não pediu
+      // redução de movimento. Se o JavaScript principal não carregar em 2,5 s,
+      // o conteúdo é exibido normalmente.
+      (function () {
+        try {
+          var d = document.documentElement;
+          // Preferências do botão de acessibilidade (aplicadas antes da pintura).
+          var p = {};
+          try { p = JSON.parse(localStorage.getItem('bf-a11y') || '{}') || {}; } catch (e) {}
+          if (p.fontScale && p.fontScale !== 100) d.style.fontSize = p.fontScale + '%';
+          if (p.highContrast) d.classList.add('a11y-contrast');
+          if (p.textSpacing) d.classList.add('a11y-spacing');
+          if (p.underlineLinks) d.classList.add('a11y-links');
+          if (p.pauseAnimations) d.classList.add('a11y-no-motion');
+          if (p.simpleFont) d.classList.add('a11y-simple-font');
+          if ((p.fontScale && p.fontScale > 100) || p.textSpacing) d.classList.add('a11y-text-large');
+          if (!p.pauseAnimations && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            d.classList.add('motion-ok');
+            setTimeout(function () {
+              if (!window.__appReady) d.classList.remove('motion-ok');
+            }, 2500);
+          }
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <noscript>
+      <p style="padding:1rem;background:#fff;color:#111">
+        Para enviar o formulário de contato, ative o JavaScript. O restante do conteúdo está disponível normalmente.
+      </p>
+    </noscript>
+    <div id="root"><!--app--></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
